@@ -1,28 +1,35 @@
 package lsis.pal.assign.finalApp;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
-public class PalMember {
-    private long id;
+@Entity
+@Table(name ="pal_members")
+class PalMember {
+
+    @Id
+    private Long id;
     private String name;
-    private long gender;
+    private Long gender;
     private String description;
 
     public PalMember() {
     }
 
-    public PalMember(long id, String name, long gender, String description) {
+    public PalMember(Long id, String name, Long gender, String description) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.description = description;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -34,11 +41,11 @@ public class PalMember {
         this.name = name;
     }
 
-    public long getGender() {
+    public Long getGender() {
         return gender;
     }
 
-    public void setGender(long gender) {
+    public void setGender(Long gender) {
         this.gender = gender;
     }
 
@@ -65,7 +72,7 @@ public class PalMember {
 
     @Override
     public String toString() {
-        return "PalMember{" +
+        return "pal_members{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", gender=" + gender +

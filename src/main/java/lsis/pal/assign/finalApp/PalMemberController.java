@@ -5,52 +5,40 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pal-members")
 public class PalMemberController {
-    private PalMemberRepository palMemberRepo;
 
+    private final PalMemberRepository palMemberRepo;
     public PalMemberController(PalMemberRepository palMemberRepo) {
         this.palMemberRepo = palMemberRepo;
     }
 
-    @PostMapping
-    public ResponseEntity<PalMember> create(@RequestBody PalMember palMember) {
-        PalMember createdTimeEntry = palMemberRepo.create(palMember);
-
-        return new ResponseEntity<>(createdTimeEntry, HttpStatus.CREATED);
-    }
-
     @GetMapping("{id}")
-    public ResponseEntity<PalMember> read(@PathVariable Long id) {
-        PalMember palMember = palMemberRepo.find(id);
-        if (palMember != null) {
-            return new ResponseEntity<>(palMember, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<PalMember> find(@PathVariable Long id) {
+        Optional<PalMember> palMember = palMemberRepo.findById(id);
+        ResponseEntity<PalMember> entity= null;
+
+        if(palMember != null){
+            entity = new ResponseEntity(palMember, HttpStatus.FOUND);
+        }else{
+            entity = new ResponseEntity(palMember, HttpStatus.NOT_FOUND);
         }
+        return entity;
     }
 
     @GetMapping
-    public ResponseEntity<List<PalMember>> list() {
-        return new ResponseEntity<>(palMemberRepo.list(), HttpStatus.OK);
+    public ResponseEntity<List<PalMember>>  list(){
+        return new ResponseEntity(palMemberRepo.findAll(),HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<PalMember> update(@PathVariable Long id, @RequestBody PalMember timeEntry) {
-        PalMember updatedTimeEntry = palMemberRepo.update(id, timeEntry);
-        if (updatedTimeEntry != null) {
-            return new ResponseEntity<>(updatedTimeEntry, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PostMapping
+    public String save(@RequestBody PalMember book){
+        palMemberRepo.save(book);
+        return "Book "+book+" added";
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
-        palMemberRepo.delete(id);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
 }
