@@ -25,12 +25,14 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
+
+    compile("mysql:mysql-connector-java:6.0.6")
 }
 
+def developmentDbUrl = "jdbc:mysql://localhost:3306/pal_member?user=root&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"
 bootRun.environment([
         "WELCOME_MESSAGE": "hello",
+        "SPRING_DATASOURCE_URL": developmentDbUrl,
 ])
 
-test.environment([
-        "WELCOME_MESSAGE": "Hello from test",
-])
